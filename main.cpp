@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include "algorithm(jw).cpp"
 using namespace std;
 
 // Import csv file to Doubly Linked List 
@@ -53,62 +54,62 @@ int main(){
     // ----- Read by Array -----
     int capacity = 10;
     int review_count = 0, transaction_count = 0;
-    int test_1a = 0, test_1b = 0;
+    // int test_1a = 0, test_1b = 0;
     // ----- Print it from file as reviews -----
     ReviewsArray* ra = new ReviewsArray[capacity];
     CSVToArrays("reviews_cleaned_csv.csv", ra, review_count, capacity);
-    cout <<"Array - based Reviews\n";
-    for(int i = 0; i < review_count; ++i){
-        cout << ra[i].product_ID <<", "<<ra[i].customer_ID<<", "<<ra[i].rating<<", "<<ra[i].review_text<<"\n";
-        test_1a++;
-        if ((test_1a + 1) % 1000 == 0) {
-            std::cout << "\n--- Press Enter to continue ---";
-            std::cin.ignore(); // Waits for Enter key
-        }
-    }
-    cout<<"Total lines to read: "<<test_1a<<endl;
+    // cout <<"Array - based Reviews\n";
+    // for(int i = 0; i < review_count; ++i){
+    //     cout << ra[i].product_ID <<", "<<ra[i].customer_ID<<", "<<ra[i].rating<<", "<<ra[i].review_text<<"\n";
+    //     test_1a++;
+    //     if ((test_1a + 1) % 1000 == 0) {
+    //         std::cout << "\n--- Press Enter to continue ---";
+    //         std::cin.ignore(); // Waits for Enter key
+    //     }
+    // }
+    // cout<<"Total lines to read: "<<test_1a<<endl;
     // ----- Print it from file as transactions -----
     TransactionsArray* ta = new TransactionsArray[capacity];
     CSVToArrays2("transactions_cleaned_csv.csv", ta, transaction_count, capacity);
-    cout <<"Array - based Transactions\n";
-    for(int i = 0; i < transaction_count; ++i){
-        cout << ta[i].customer_ID <<", "<<ta[i].product<<", "<<ta[i].category<<", "<<ta[i].price<<", "<<ta[i].date<<", "<<ta[i].payment_method<<"\n";
-        test_1b++;
-        if ((test_1b + 1) % 1000 == 0) {
-            std::cout << "\n--- Press Enter to continue ---";
-            std::cin.ignore(); // Waits for Enter key
-        }
-    }
-    cout<<"Total lines to read: "<<test_1b<<endl;
+    // cout <<"Array - based Transactions\n";
+    // for(int i = 0; i < transaction_count; ++i){
+    //     cout << ta[i].customer_ID <<", "<<ta[i].product<<", "<<ta[i].category<<", "<<ta[i].price<<", "<<ta[i].date<<", "<<ta[i].payment_method<<"\n";
+    //     test_1b++;
+    //     if ((test_1b + 1) % 1000 == 0) {
+    //         std::cout << "\n--- Press Enter to continue ---";
+    //         std::cin.ignore(); // Waits for Enter key
+    //     }
+    // }
+    // cout<<"Total lines to read: "<<test_1b<<endl;
 
     // ----- Read by Linked List -----
     ReviewsNode* head = nullptr;
     ReviewsNode* tail = nullptr;
-    int test_2a = 0, test_2b = 0;
+    // int test_2a = 0, test_2b = 0;
     CSVToLinkedList("reviews_cleaned_csv.csv", head, tail);
 
     // ----- Print it from forward of reviews -----
-    for (ReviewsNode* temp = head; temp != nullptr; temp = temp->next) {
-        std::cout << temp->product_ID << ", " << temp->customer_ID << ", " << temp->rating << ", "<< temp->review_text << "\n";
-        test_2a++;
-        if ((test_2a + 1) % 100 == 0) {
-            std::cout << "\n--- Press Enter to continue ---";
-            std::cin.ignore(); // Waits for Enter key
-        }
-    }
-    cout<<"Total lines to read: "<<test_2a<<endl;
+    // for (ReviewsNode* temp = head; temp != nullptr; temp = temp->next) {
+    //     std::cout << temp->product_ID << ", " << temp->customer_ID << ", " << temp->rating << ", "<< temp->review_text << "\n";
+    //     test_2a++;
+    //     if ((test_2a + 1) % 100 == 0) {
+    //         std::cout << "\n--- Press Enter to continue ---";
+    //         std::cin.ignore(); // Waits for Enter key
+    //     }
+    // }
+    // cout<<"Total lines to read: "<<test_2a<<endl;
 
     // ----- Print it from forward of transactions -----
     CSVToLinkedList2("transactions_cleaned_csv.csv", head, tail);
-    for (ReviewsNode* temp = head; temp != nullptr; temp = temp->next) {
-        std::cout << temp->customer_ID << ", " << temp->product << ", " << temp->category << ", "<< temp->price << ", "<< temp->date<<", "<< temp->payment_method << "\n";
-        test_2b++;
-        if ((test_2b + 1) % 100 == 0) {
-            std::cout << "\n--- Press Enter to continue ---";
-            std::cin.ignore(); // Waits for Enter key
-        }
-    }
-    cout<<"Total lines to read: "<<test_2b<<endl;
+    // for (ReviewsNode* temp = head; temp != nullptr; temp = temp->next) {
+    //     std::cout << temp->customer_ID << ", " << temp->product << ", " << temp->category << ", "<< temp->price << ", "<< temp->date<<", "<< temp->payment_method << "\n";
+    //     test_2b++;
+    //     if ((test_2b + 1) % 100 == 0) {
+    //         std::cout << "\n--- Press Enter to continue ---";
+    //         std::cin.ignore(); // Waits for Enter key
+    //     }
+    // }
+    // cout<<"Total lines to read: "<<test_2b<<endl;
 
     // ----- Print it from backward of reviews -----
     // for (ReviewsNode* temp = tail; temp != nullptr; temp = temp->prev) {
@@ -123,6 +124,12 @@ int main(){
     //     test_2b++;
     // }
     // cout<<"Total lines to read: "<<test_2b<<endl;
+
+    // ----- Sorting Algorithms (Quick Sort) && Searching Algorithms (Recursive Search) -----
+    // 1. How can you efficiently sort customer transactions by date and display the total number of transactions in both datasets?
+    quickSortbydate(ta, 0, transaction_count - 1);
+
+
 
     return 0;
 }
