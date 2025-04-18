@@ -8,11 +8,11 @@ using namespace std;
 struct ReviewsNode{
     string product_ID;
     string customer_ID;
-    string rating;
+    int rating;
     string review_text;
     string product;
     string category;
-    string price;
+    float price;
     string date;
     string payment_method;
     ReviewsNode* next = nullptr;
@@ -22,14 +22,14 @@ struct ReviewsNode{
 struct ReviewsArray{
     string product_ID;
     string customer_ID;
-    string rating;
+    int rating;
     string review_text;
 };
 struct TransactionsArray{
     string customer_ID;
     string product;
     string category;
-    string price;
+    float price;
     string date;
     string payment_method;
 };
@@ -147,7 +147,7 @@ void CSVToLinkedList(const string& file_name, ReviewsNode*& head, ReviewsNode*& 
         getline(ss, item, ','); // attribute 02 Customer ID (str)
         newNode -> customer_ID = item;
         getline(ss, item, ','); // attribute 03 Rating (int)
-        newNode -> rating = item;
+        newNode -> rating = stoi(item);
         getline(ss, item, ','); // attribute 04 Review Text (str)
         newNode -> review_text = item; 
 
@@ -180,8 +180,8 @@ void CSVToLinkedList2(const string& file_name, ReviewsNode*& head, ReviewsNode*&
         newNode -> product = item;
         getline(ss, item, ','); // attribute 03 Category (str)
         newNode -> category = item;
-        getline(ss, item, ','); // attribute 04 price (str)
-        newNode -> price = item; 
+        getline(ss, item, ','); // attribute 04 price (double)
+        newNode -> price = stof(item); 
         getline(ss, item, ','); // attribute 05 date (str)
         newNode -> date = item;
         getline(ss, item, ','); // attribute 06 payment method (str)
@@ -235,7 +235,7 @@ void CSVToArrays(const string& file_name, ReviewsArray*& array, int& count, int&
         getline(ss, item, ','); // attribute 02 Customer ID (str)
         array[count].customer_ID = item;
         getline(ss, item, ','); // attribute 03 Rating (int)
-        array[count].rating = item; 
+        array[count].rating = stoi(item); 
         getline(ss, item, ','); // attribute 04 Review Text (str)
         array[count].review_text = item;
         ++count;
@@ -260,7 +260,7 @@ void CSVToArrays2(const string& file_name, TransactionsArray*& array, int& count
         getline(ss, item, ','); // attribute 03 category (int)
         array[count].category = item; 
         getline(ss, item, ','); // attribute 04 price (str)
-        array[count].price = item;
+        array[count].price = stof(item);
         getline(ss, item, ','); // attribute 05 date (str)
         array[count].date = item;
         getline(ss, item, ','); // attribute 06 payment method (str)
