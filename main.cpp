@@ -5,35 +5,35 @@
 #include "algorithm(jw).cpp"
 using namespace std;
 
-// Import csv file to Doubly Linked List 
-struct ReviewsNode{
-    string product_ID;
-    string customer_ID;
-    int rating;
-    string review_text;
-    string product;
-    string category;
-    float price;
-    string date;
-    string payment_method;
-    ReviewsNode* next = nullptr;
-    ReviewsNode* prev = nullptr;
-};
-// Import csv file to Dynamic Array
-struct ReviewsArray{
-    string product_ID;
-    string customer_ID;
-    int rating;
-    string review_text;
-};
-struct TransactionsArray{
-    string customer_ID;
-    string product;
-    string category;
-    float price;
-    string date;
-    string payment_method;
-};
+// // Import csv file to Doubly Linked List 
+// struct ReviewsNode{
+//     string product_ID;
+//     string customer_ID;
+//     int rating;
+//     string review_text;
+//     string product;
+//     string category;
+//     float price;
+//     string date;
+//     string payment_method;
+//     ReviewsNode* next = nullptr;
+//     ReviewsNode* prev = nullptr;
+// };
+// // Import csv file to Dynamic Array
+// struct ReviewsArray{
+//     string product_ID;
+//     string customer_ID;
+//     int rating;
+//     string review_text;
+// };
+// struct TransactionsArray{
+//     string customer_ID;
+//     string product;
+//     string category;
+//     float price;
+//     string date;
+//     string payment_method;
+// };
 
 // declare function
 void CSVToLinkedList(const string& file_name, ReviewsNode*& head, ReviewsNode*& tail);
@@ -43,6 +43,10 @@ void CSVToArrays2(const string& file_name, TransactionsArray*& array, int& count
 void resizeArray(ReviewsArray*& array, int& capacity);
 void resizeArray(TransactionsArray*& array, int& capacity);
 int countCSVLines(const string& filename);
+// declare function from algorithm(jw).cpp
+int partitionbydate(TransactionsArray* arr, int low, int high);
+void quickSortbydate(TransactionsArray* arr, int low, int high);
+void recursiveSearchByCustomerID(TransactionsArray* arr, int index, int size, const string& targetID);
 
 // Main 
 int main(){
@@ -128,6 +132,15 @@ int main(){
     // ----- Sorting Algorithms (Quick Sort) && Searching Algorithms (Recursive Search) -----
     // 1. How can you efficiently sort customer transactions by date and display the total number of transactions in both datasets?
     quickSortbydate(ta, 0, transaction_count - 1);
+    cout << "Sorted Transactions:\n";
+    for (int i = 0; i < transaction_count; ++i) {
+        cout << ta[i].customer_ID << ", "<< ta[i].product << ", "<< ta[i].date << "\n";
+    }
+    
+    // cout << "\nSearch for customer ID 'CUST1234':\n";
+    // recursiveSearchByCustomerID(ta, 0, transaction_count, "CUST1234");
+
+    cout << "\nTotal Transactions (Array): " << transaction_count << endl;
 
 
 

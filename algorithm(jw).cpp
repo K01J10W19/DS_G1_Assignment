@@ -1,14 +1,14 @@
 #include <iostream>
 using namespace std;
-// Import csv file to Doubly Linked List 
+
 struct ReviewsNode{
     string product_ID;
     string customer_ID;
-    string rating;
+    int rating;
     string review_text;
     string product;
     string category;
-    string price;
+    float price;
     string date;
     string payment_method;
     ReviewsNode* next = nullptr;
@@ -18,17 +18,18 @@ struct ReviewsNode{
 struct ReviewsArray{
     string product_ID;
     string customer_ID;
-    string rating;
+    int rating;
     string review_text;
 };
 struct TransactionsArray{
     string customer_ID;
     string product;
     string category;
-    string price;
+    float price;
     string date;
     string payment_method;
 };
+
 // Sorting Algorithms (Quick Sort) && Searching Algorithms (Recursive Search)
 
 // 1. How can you efficiently sort customer transactions by date and display the total number of transactions in both datasets?
@@ -78,10 +79,6 @@ struct TransactionsArray{
 
 // 3. Which words are most frequently used in product reviews rated 1-star? 
 // (Hint: Extract the most common words, sort them by frequency, and present the results)
-
-
-
-
 
 
 
