@@ -2,7 +2,10 @@
 #include <string>
 #include <sstream>
 #include <fstream>
-#include "algorithm(jw).cpp"
+#include <algorithm>
+#include <cctype>
+#include "algorithm_jw.cpp"
+
 using namespace std;
 
 // // Import csv file to Doubly Linked List 
@@ -44,10 +47,9 @@ void resizeArray(ReviewsArray*& array, int& capacity);
 void resizeArray(TransactionsArray*& array, int& capacity);
 int countCSVLines(const string& filename);
 // declare function from algorithm(jw).cpp
-int partitionbydate(TransactionsArray* arr, int low, int high);
 void quickSortbydate(TransactionsArray* arr, int low, int high);
 void recursiveSearchByCustomerID(TransactionsArray* arr, int index, int size, const string& targetID);
-
+void quickSortbycategory(TransactionsArray* arr, int low, int high);
 // Main 
 int main(){
     // ----- check * information in file ----- 
@@ -131,18 +133,47 @@ int main(){
 
     // ----- Sorting Algorithms (Quick Sort) && Searching Algorithms (Recursive Search) -----
     // 1. How can you efficiently sort customer transactions by date and display the total number of transactions in both datasets?
-    quickSortbydate(ta, 0, transaction_count - 1);
-    cout << "Sorted Transactions:\n";
-    for (int i = 0; i < transaction_count; ++i) {
-        cout << ta[i].customer_ID << ", "<< ta[i].product << ", "<< ta[i].date << "\n";
-    }
+    // quickSortbydate( ta , 0 , transaction_count - 1);
+    // cout << "Sorted Transactions:\n";
+    // for (int i = 0; i < transaction_count; ++i) {
+    //     cout << ta[i].customer_ID << ", "<< ta[i].product << ", "<< ta[i].date << "\n";
+    // }
     
-    // cout << "\nSearch for customer ID 'CUST1234':\n";
-    // recursiveSearchByCustomerID(ta, 0, transaction_count, "CUST1234");
+    // cout << "\nTotal Transactions (Array): " << transaction_count << endl;
 
-    cout << "\nTotal Transactions (Array): " << transaction_count << endl;
-
-
+    // string cid;
+    // cout << "----- Transactions History -----\n";
+    // cout << "\nSearch for customer ID 'CUST1234': ";
+    // cin >> cid;
+    // transform(cid.begin(), cid.end(), cid.begin(), ::toupper);
+    // recursiveSearchByCustomerID(ta, 0, transaction_count, cid, 1);
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 2. What percentage of purchases in the “Electronics” category were made using Credit Card payments? 
+    // quickSortbycategory(ta, 0, transaction_count - 1);
+    // cout << "Sorted Category:\n";
+    // for(int i = 0; i < transaction_count; ++i){
+    //     cout << ta[i].customer_ID <<", "<< ta[i].product << ", "<<ta[i].category<<endl;
+    // }
+    // int totalElectronics = countElectronics(ta, 0, transaction_count);
+    // int ccElectronics = countElectronicsCreditCard(ta, 0, transaction_count);
+    // cout <<"Total Electronics in Category: "<<totalElectronics<<" / "<<transaction_count<<endl;
+    // cout <<"Payment Method of Credit Card in Electronics: "<<ccElectronics<<" / "<<totalElectronics<<endl;
+    // if(totalElectronics > 0){
+    //     double percentage = (double)ccElectronics / totalElectronics * 100;
+    //     cout <<"Electronics purchases with Credit Card: "<<percentage<<"%"<<endl;
+    // }else{
+    //     cout << "No Category of Electronics found.\n";
+    // }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 3. Which words are most frequently used in product reviews rated 1-star? 
+    // int sentencecount = 0;
+    // ReviewFrequency* ra_review = new ReviewFrequency[capacity];
+    // extractFrequentSentences(ra, review_count, ra_review, sentencecount, capacity);
+    // quickSortsentencesbyfrequency(ra_review, 0, sentencecount - 1);
+    // for(int i = 0; i < sentencecount; ++i){
+    //     cout << ra_review[i].sentence <<", "<< ra_review[i].count <<endl;
+    // }
+    // showTopFrequentSentences(ra_review, sentencecount, 10);
 
     return 0;
 }
