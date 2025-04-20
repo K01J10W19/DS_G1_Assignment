@@ -4,10 +4,20 @@
 #include <fstream>
 #include <algorithm>
 #include <cctype>
+#include <iomanip>
 #include "algorithm_jw.cpp"
-
+#include <chrono>
 using namespace std;
-
+using namespace chrono;
+template<typename Func>
+// Calculate Time Efficiency
+void Measure_Time(Func func){
+    auto begin = high_resolution_clock::now();
+    func();
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(end - begin);
+    cout << "Time taken: "<< duration.count() << " ms"<<endl;
+}
 // // Import csv file to Doubly Linked List 
 // struct ReviewsNode{
 //     string product_ID;
@@ -40,7 +50,7 @@ using namespace std;
 
 // declare function
 void CSVToLinkedList(const string& file_name, ReviewsNode*& head, ReviewsNode*& tail);
-void CSVToLinkedList2(const string& file_name, ReviewsNode*& head, ReviewsNode*& tail);
+void CSVToLinkedList2(const string& file_name, TransactionsNode*& head, TransactionsNode*& tail);
 void CSVToArrays(const string& file_name, ReviewsArray*& array, int& count, int& capacity);
 void CSVToArrays2(const string& file_name, TransactionsArray*& array, int& count, int& capacity);
 void resizeArray(ReviewsArray*& array, int& capacity);
@@ -91,6 +101,10 @@ int main(){
     // ----- Read by Linked List -----
     ReviewsNode* head = nullptr;
     ReviewsNode* tail = nullptr;
+    TransactionsNode* head2 = nullptr;
+    TransactionsNode* tail2 = nullptr;
+    ReviewFrequencyll* head3 = nullptr;
+    ReviewFrequencyll* tail3 = nullptr;
     // int test_2a = 0, test_2b = 0;
     CSVToLinkedList("reviews_cleaned_csv.csv", head, tail);
 
@@ -106,7 +120,7 @@ int main(){
     // cout<<"Total lines to read: "<<test_2a<<endl;
 
     // ----- Print it from forward of transactions -----
-    CSVToLinkedList2("transactions_cleaned_csv.csv", head, tail);
+    CSVToLinkedList2("transactions_cleaned_csv.csv", head2, tail2);
     // for (ReviewsNode* temp = head; temp != nullptr; temp = temp->next) {
     //     std::cout << temp->customer_ID << ", " << temp->product << ", " << temp->category << ", "<< temp->price << ", "<< temp->date<<", "<< temp->payment_method << "\n";
     //     test_2b++;
@@ -130,11 +144,11 @@ int main(){
     //     test_2b++;
     // }
     // cout<<"Total lines to read: "<<test_2b<<endl;
-
-    // ----- Sorting Algorithms (Quick Sort) && Searching Algorithms (Recursive Search) -----
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // ----- Sorting Algorithms (Quick Sort) && Searching Algorithms (Recursive Search) OF ARRAYS-----
     // 1. How can you efficiently sort customer transactions by date and display the total number of transactions in both datasets?
     // quickSortbydate( ta , 0 , transaction_count - 1);
-    // cout << "Sorted Transactions:\n";
+    // cout << "Sorted Transactions by Date (Array):\n";
     // for (int i = 0; i < transaction_count; ++i) {
     //     cout << ta[i].customer_ID << ", "<< ta[i].product << ", "<< ta[i].date << "\n";
     // }
@@ -174,7 +188,40 @@ int main(){
     //     cout << ra_review[i].sentence <<", "<< ra_review[i].count <<endl;
     // }
     // showTopFrequentSentences(ra_review, sentencecount, 10);
-
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // ----- Sorting Algorithms (Quick Sort) && Searching Algorithms (Recursive Search) OF LINKED LIST -----
+    // quickSortbydatell(head2, tail2);
+    // cout<<"\nSorted Transactions by Date(Linked List):\n";
+    // displayTransactions(head2);
+    // int total = countTransactions(head2);
+    // cout<<"\nTotal Transactions: (Linked List): "<< total << endl;
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // int totalElectronics = countElectronicsTotal(head2);
+    // int electronicsWithCreditCard = countElectronicsCredit(head2);
+    // cout <<"Total Electronics in Category: "<<totalElectronics<<" / "<<countTransactions(head2)<<endl;
+    // cout <<"Payment Method of Credit Card in Electronics: "<<electronicsWithCreditCard<<" / "<<totalElectronics<<endl;
+    // if (totalElectronics > 0) {
+    //     double percentage = (double)electronicsWithCreditCard / totalElectronics * 100;
+    //     cout << fixed << setprecision(2);
+    //     cout << "Percentage of Electronics purchases using Credit Card: " << percentage << "%" << endl;
+    // } else {
+    //     cout << "No Electronics purchases found." << endl;
+    // }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // extract1StarSentences(head, head3, tail3);
+    // quickSortll(head3, getTail(head3));
+    // displayTopSentences(head3, 10);
+    /// Measure Time Efficiency
+    cout<<"Used Quick Sorting for Dynamic Arrays (Sorting Date): ";
+    Measure_Time([&](){quickSortbydate(ta , 0 , transaction_count - 1);});
+    cout<<"Used Quick Sorting for Doubly Linked List (Sorting Date): ";
+    Measure_Time([&](){quickSortbydatell(head2, tail2);});
+    cout<<"Estimated Memory (Review Array): "<< sizeof(ReviewsArray) * review_count <<" bytes"<<endl;
+    cout<<"Estimated Memory (Transaction Array): "<< sizeof(TransactionsArray) * transaction_count <<" bytes"<<endl;
+    int reviewsnodeSize = sizeof(ReviewsNode) + sizeof(ReviewsNode*) * 2;
+    int TransactionsnodeSize = sizeof(TransactionsNode) + sizeof(TransactionsNode*) * 2;
+    cout<<"Estimated Memory (Review Linked List): "<< reviewsnodeSize * review_count <<" bytes"<<endl;
+    cout<<"Estimated Memory (Transaction Linked List): "<< TransactionsnodeSize * transaction_count <<" bytes"<<endl;
     return 0;
 }
 
@@ -212,7 +259,7 @@ void CSVToLinkedList(const string& file_name, ReviewsNode*& head, ReviewsNode*& 
     }
 }
 
-void CSVToLinkedList2(const string& file_name, ReviewsNode*& head, ReviewsNode*& tail){ // Transactions_CSV
+void CSVToLinkedList2(const string& file_name, TransactionsNode*& head, TransactionsNode*& tail){ // Transactions_CSV
     ifstream file(file_name); // input the file
     string line; // variable called line
 
@@ -223,7 +270,7 @@ void CSVToLinkedList2(const string& file_name, ReviewsNode*& head, ReviewsNode*&
     while(getline(file, line)){ // read the file line by line
         stringstream ss(line);  
         string item;
-        ReviewsNode* newNode = new ReviewsNode(); // set pointer in doubly linked list
+        TransactionsNode* newNode = new TransactionsNode(); // set pointer in doubly linked list
 
         getline(ss, item, ','); // attribute 01 Customer ID (str)
         newNode -> customer_ID = item;
@@ -334,3 +381,6 @@ int countCSVLines(const string& filename) {
     file.close();
     return count;
 }
+
+
+
