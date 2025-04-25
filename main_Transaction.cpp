@@ -1,0 +1,114 @@
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <fstream>
+#include <algorithm>
+#include <cctype>
+#include <iomanip>
+#include <chrono>
+#include "Arrays.hpp"
+#include "LinkedList.hpp"
+using namespace std;
+//// Measure Time Efficiency
+using namespace chrono;
+template<typename Func>
+void Measure_Time(Func func){
+    auto begin = high_resolution_clock::now();
+    func();
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(end - begin);
+    cout << "Time taken: "<< duration.count() << " ms"<<endl;
+}
+int main(){
+    //// ----- Transaction of Arrays -----
+    int transaction_count = 0;
+    TransactionsArray* ta = nullptr;
+    TransactionToArrays("transactions_cleaned.csv", ta, transaction_count);
+    // for(int i = 0; i < transaction_count; ++i){
+    //     cout << ta[i].customer_ID <<", "<<ta[i].product<<", "<<ta[i].category<<", "<<ta[i].price<<", "<<ta[i].date<<", "<<ta[i].payment_method<<"\n";
+    // }
+    cout<<"Total lines to read (Transaction Arrays): "<<transaction_count<<endl;
+    cout<<"Estimated Memory for Array: "<< sizeof(TransactionsArray) * transaction_count <<" bytes"<<endl;
+    //// ----- Transaction of LinkedList -----
+    TransactionsNode* head = nullptr;
+    TransactionsNode* tail = nullptr;
+    TransactionsToLinkedList("transactions_cleaned.csv",head, tail);
+    // for (TransactionsNode* temp = head; temp != nullptr; temp = temp->next) {
+    //     std::cout << temp->customer_ID << ", " << temp->product << ", " << temp->category << ", "<< temp->price << ", "<< temp->date<<", "<< temp->payment_method << "\n";
+    // }
+    cout<<"Total lines to read (Transaction LinkedList): "<<countLinkedList(head)<<endl;
+    int TransactionsnodeSize = sizeof(TransactionsNode) + sizeof(TransactionsNode*) * 2;
+    cout<<"Estimated Memory (Transaction Linked List): "<< TransactionsnodeSize * transaction_count <<" bytes"<<endl;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//// 1. How can you efficiently sort customer transactions by date and display the total number of transactions in both datasets?    
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//// Koh Chun Wei TP067580 (Quick Sort & Recursion Search)
+//// Array
+    // quickSortbydate(ta, 0, transaction_count - 1);
+    // for (int i = 0; i < transaction_count; ++i) {
+    //     cout << ta[i].customer_ID << ", "<< ta[i].product << ", "<< ta[i].date << "\n";
+    // }
+    // cout<<"Total Transaction Arrays: "<<transaction_count<<endl;
+    // string cid;
+    // cout << "----- Transactions History -----\n";
+    // cout << "\nSearch for customer ID 'CUST1234': ";
+    // cin >> cid;
+    // transform(cid.begin(), cid.end(), cid.begin(), ::toupper);
+    // recursiveSearchByCustomerID(ta, 0, transaction_count, cid, 1);
+    cout<<"Quick Sorting & Recursion Searching for Array [Question01]: ";
+    Measure_Time([&](){quickSortbydate(ta, 0, transaction_count - 1);});
+//// LinkedList
+    // quickSortbydatell(head,tail);
+    // displayTransactions(head);
+    // cout<<"\nTotal Transactions Linked List: "<< countTransactions(head) << endl;
+    cout<<"Quick Sorting & Recursion Searching for Linked List [Question01]: ";
+    Measure_Time([&](){quickSortbydatell(head, tail);});
+//// U Guys Can Add+ Here below continue
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//// 2. What percentage of purchases in the “Electronics” category were made using Credit Card payments?   
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//// Koh Chun Wei TP067580 (Quick Sort & Recursion Search)
+//// Array
+    // quickSortbycategory(ta, 0, transaction_count - 1);
+    // cout << "Sorted Category:\n";
+    // for(int i = 0; i < transaction_count; ++i){
+    //     cout << ta[i].customer_ID <<", "<< ta[i].product << ", "<<ta[i].category<<endl;
+    // }
+    // int totalElectronics = countElectronics(ta, 0, transaction_count);
+    // int ccElectronics = countElectronicsCreditCard(ta, 0, transaction_count);
+    // cout <<"Total Electronics in Category: "<<totalElectronics<<" / "<<transaction_count<<endl;
+    // cout <<"Payment Method of Credit Card in Electronics: "<<ccElectronics<<" / "<<totalElectronics<<endl;
+    // if(totalElectronics > 0){
+    //     double percentage = (double)ccElectronics / totalElectronics * 100;
+    //     cout <<"Electronics purchases with Credit Card: "<<percentage<<"%"<<endl;
+    // }else{
+    //     cout << "No Category of Electronics found.\n";
+    // }
+    cout<<"Quick Sorting & Recursion Searching for Array [Question02]: ";
+    Measure_Time([&](){quickSortbycategory(ta, 0, transaction_count - 1);});
+//// LinkedList
+    // quickSortbycategoryll(head,tail);
+    // displayCategory(head);
+    // int totalElectronics = countElectronicsTotal(head);
+    // int electronicsWithCreditCard = countElectronicsCredit(head);
+    // cout <<"Total Electronics in Category: "<<totalElectronics<<" / "<<countTransactions(head)<<endl;
+    // cout <<"Payment Method of Credit Card in Electronics: "<<electronicsWithCreditCard<<" / "<<totalElectronics<<endl;
+    // if (totalElectronics > 0) {
+    //     double percentage = (double)electronicsWithCreditCard / totalElectronics * 100;
+    //     cout << fixed << setprecision(2);
+    //     cout << "Percentage of Electronics purchases using Credit Card: " << percentage << "%" << endl;
+    // } else {
+    //     cout << "No Electronics purchases found." << endl;
+    // }
+    cout<<"Quick Sorting & Recursion Searching for Linked List [Question02]: ";
+    Measure_Time([&](){quickSortbycategoryll(head, tail);});
+//// U Guys Can Add+ Here below continue
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//// Clear the Pointer after Completed
+    delete[] ta;
+    clearLinkedList(head);
+    return 0;
+}
