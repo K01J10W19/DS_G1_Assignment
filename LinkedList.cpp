@@ -162,6 +162,25 @@ void quickSortbydatell(TransactionsNode* low, TransactionsNode* high) {
         quickSortbydatell(p->next, high);
     }
 }
+void bubbleSortByDateLL(TransactionsNode* head) {
+    bool swapped;
+    do {
+        swapped = false;
+        TransactionsNode* current = head;
+        while (current != nullptr && current->next != nullptr) {
+            if (convertDateFormatll(current->date) > convertDateFormatll(current->next->date)) {
+                swap(current->customer_ID, current->next->customer_ID);
+                swap(current->product, current->next->product);
+                swap(current->category, current->next->category);
+                swap(current->price, current->next->price);
+                swap(current->date, current->next->date);
+                swap(current->payment_method, current->next->payment_method);
+                swapped = true;
+            }
+            current = current->next;
+        }
+    } while (swapped);
+}
 void displayTransactions(TransactionsNode* head) {
     while (head) {
         cout << head->customer_ID << ", "
