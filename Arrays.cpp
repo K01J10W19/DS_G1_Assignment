@@ -75,6 +75,7 @@ void TransactionToArrays(const string& file_name, TransactionsArray*& array, int
 
 //////////////////////////////////////////////////////////////////////////
 // Koh Chun Wei TP067580 (Quick Sort & Recursion Search)
+// Liew Yi Xian TP068306 (Bubble Sort & Binary Search)
 // 1. 
 string convertDateFormat(const string& date){
     int day, month, year;
@@ -128,6 +129,62 @@ void recursiveSearchByCustomerID(TransactionsArray* arr, int index, int size, co
 
     recursiveSearchByCustomerID(arr, index + 1, size, targetID, qty);
 } 
+void bubbleSortByDate(TransactionsArray* arr, int count) {
+    for (int i = 0; i < count - 1; ++i) {
+        for (int j = 0; j < count - i - 1; ++j) {
+            if (convertDateFormat(arr[j].date) > convertDateFormat(arr[j + 1].date)) {
+                swap(arr[j], arr[j + 1]);
+            }
+        }
+    }
+}
+int binarySearchCustomerID(TransactionsArray* arr, int size, const string& customerID) {
+    int low = 0, high = size - 1;
+    while (low <= high) {
+        int mid = (low + high) / 2;
+        if (arr[mid].customer_ID == customerID) {
+            return mid; // Found one match
+        } else if (arr[mid].customer_ID < customerID) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return -1; // Not found
+}
+
+void displayAllCustomerTransactions(TransactionsArray* arr, int size, const string& customerID) {
+    int index = binarySearchCustomerID(arr, size, customerID);
+    if (index == -1) {
+        cout << "No transactions found for Customer ID: " << customerID << endl;
+        return;
+    }
+
+    cout << "Transactions for Customer ID: " << customerID << endl;
+
+    // Expand left
+    int left = index - 1;
+    while (left >= 0 && arr[left].customer_ID == customerID) {
+        left--;
+    }
+
+    // Expand right
+    int right = index + 1;
+    while (right < size && arr[right].customer_ID == customerID) {
+        right++;
+    }
+
+    // Print all in range
+    for (int i = left + 1; i < right; ++i) {
+        cout << "- - - - - " << (i - left) << " - - - - -\n";
+        cout << "Customer ID: " << arr[i].customer_ID << endl;
+        cout << "Product:     " << arr[i].product << endl;
+        cout << "Date:        " << arr[i].date << endl;
+        cout << "Category:    " << arr[i].category << endl;
+        cout << "Payment:     " << arr[i].payment_method << endl;
+        cout << "Price:       RM" << arr[i].price << "\n\n";
+    }
+}
 //// U Guys Can Add+ Here below continue
 //////////////////////////////////////////////////////////////////////////
 // Koh Chun Wei TP067580 (Quick Sort & Recursion Search)

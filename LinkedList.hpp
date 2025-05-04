@@ -44,6 +44,7 @@ void clearLinkedList(TransactionsNode*& head);
 string convertDateFormatll(const string& date);
 TransactionsNode* partitionbydatell(TransactionsNode* low, TransactionsNode* high);
 void quickSortbydatell(TransactionsNode* low, TransactionsNode* high);
+void bubbleSortByDateLL(TransactionsNode* head);
 void displayTransactions(TransactionsNode* head);
 int countTransactions(TransactionsNode* head);
 // Question 02

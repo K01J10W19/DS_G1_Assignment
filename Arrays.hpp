@@ -35,6 +35,11 @@ string convertDateFormat(const string& date);
 int partitionbydate(TransactionsArray* arr, int low, int high);
 void quickSortbydate(TransactionsArray* arr, int low, int high);
 void recursiveSearchByCustomerID(TransactionsArray* arr, int index, int size, const string& targetID, int num);
+// Yi Xian
+void bubbleSortByDate(TransactionsArray* arr, int count);
+int binarySearchCustomerID(TransactionsArray* arr, int size, const string& customerID);
+void displayAllCustomerTransactions(TransactionsArray* arr, int size, const string& customerID); // Display all transactions for a given customer ID (expands from binary search result)
+
 // Question 02
 string normalize(string& str);
 int partitionbycategory(TransactionsArray* arr, int low, int high);
