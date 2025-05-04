@@ -64,32 +64,32 @@ int main(){
     //cout<<"Quick Sorting & Recursion Searching for Linked List [Question01]: ";
     //Measure_Time([&](){quickSortbydatell(head, tail);});
 //// U Guys Can Add+ Here below continue
-//// Array
-    cout << "Sorting transactions by date using Bubble Sort.123..\n";
-    bubbleSortByDate(ta, transaction_count);
-    cout << "\nTotal Number of Transactions: " << transaction_count << endl;
-    cout << "Sorted Transactions (by Date):\n";
-    for (int i = 0; i < transaction_count; ++i) {
-        cout << ta[i].customer_ID << ", " 
-             << ta[i].product << ", " 
-             << ta[i].category << ", " 
-             << ta[i].price << ", "
-             << ta[i].date << ", " 
-             << ta[i].payment_method << "\n";
-    }    
-    string cid;
-    cout << "\nEnter a Customer ID to search (e.g., CUST1234): ";
-    cin >> cid;
-    transform(cid.begin(), cid.end(), cid.begin(), ::toupper);
-    displayAllCustomerTransactions(ta, transaction_count, cid);
-    cout<<"Bubble Search & Binary Search for Array [Question01]: ";
-    Measure_Time([&](){bubbleSortByDate(ta, transaction_count);});
-//// LinkedList
-bubbleSortByDateLL(head);
-displayTransactions(head);
-cout<<"\nTotal Transactions Linked List: "<< countTransactions(head) << endl;
-cout<<"Bubble Sort & Binary Search for Linked List [Question01]: ";
-Measure_Time([&](){bubbleSortByDateLL(head);});
+//// Array YIxian
+//     cout << "Sorting transactions by date using Bubble Sort.123..\n";
+//     bubbleSortByDate(ta, transaction_count);
+//     cout << "\nTotal Number of Transactions: " << transaction_count << endl;
+//     cout << "Sorted Transactions (by Date):\n";
+//     for (int i = 0; i < transaction_count; ++i) {
+//         cout << ta[i].customer_ID << ", " 
+//              << ta[i].product << ", " 
+//              << ta[i].category << ", " 
+//              << ta[i].price << ", "
+//              << ta[i].date << ", " 
+//              << ta[i].payment_method << "\n";
+//     }    
+//     string cid;
+//     cout << "\nEnter a Customer ID to search (e.g., CUST1234): ";
+//     cin >> cid;
+//     transform(cid.begin(), cid.end(), cid.begin(), ::toupper);
+//     displayAllCustomerTransactions(ta, transaction_count, cid);
+//     cout<<"Bubble Search & Binary Search for Array [Question01]: ";
+//     Measure_Time([&](){bubbleSortByDate(ta, transaction_count);});
+// //// LinkedList
+// bubbleSortByDateLL(head);
+// displayTransactions(head);
+// cout<<"\nTotal Transactions Linked List: "<< countTransactions(head) << endl;
+// cout<<"Bubble Sort & Binary Search for Linked List [Question01]: ";
+// Measure_Time([&](){bubbleSortByDateLL(head);});
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //// 2. What percentage of purchases in the “Electronics” category were made using Credit Card payments?   
