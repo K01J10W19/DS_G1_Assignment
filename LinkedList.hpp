@@ -54,6 +54,12 @@ int countElectronicsTotal(TransactionsNode* node);
 TransactionsNode* partitionbycategoryll(TransactionsNode* low, TransactionsNode* high);
 void quickSortbycategoryll(TransactionsNode* low, TransactionsNode* high);
 void displayCategory(TransactionsNode* head);
+
+void bubbleSortByCategoryLL(TransactionsNode* head);
+TransactionsNode* getNodeAt(TransactionsNode* head, int index);
+int binarySearchCategoryLL(TransactionsNode* head, int size, const string& category);
+void countElectronicsCreditCardLL_Binary(TransactionsNode* head, int size, int& total, int& creditCard);
+
 // Question 03
 void countWordsFromOnell(ReviewsNode* head, WordFrequencyll*& wf_head, int& totalWords);
 void printWordOccurrences(WordFrequencyll* wf_head);

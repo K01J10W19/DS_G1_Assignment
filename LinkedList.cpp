@@ -267,6 +267,77 @@ int countElectronicsTotal(TransactionsNode* node) {
 
     return countElectronicsTotal(node->next);
 }
+TransactionsNode* getNodeAt(TransactionsNode* head, int index) {
+    int currentIndex = 0;
+    TransactionsNode* current = head;
+    while (current != nullptr && currentIndex < index) {
+        current = current->next;
+        currentIndex++;
+    }
+    return current;
+}
+
+string normalize(const string& text) {
+    string result = text;
+    result.erase(remove_if(result.begin(), result.end(), ::isspace), result.end());
+    transform(result.begin(), result.end(), result.begin(), ::tolower);
+    return result;
+}
+int binarySearchCategoryLL(TransactionsNode* head, int size, const string& target) {
+    int low = 0, high = size - 1;
+    string tgt = normalize(target);
+
+    while (low <= high) {
+        int mid = (low + high) / 2;
+        TransactionsNode* midNode = getNodeAt(head, mid);
+        if (!midNode) break;
+
+        string midCat = normalize(midNode->category);
+        if (midCat == tgt) return mid;  // Return index of first match
+        else if (midCat < tgt) low = mid + 1;
+        else high = mid - 1;
+    }
+    return -1;
+}
+void countElectronicsCreditCardLL_Binary(TransactionsNode* head, int size, int& total, int& creditCard) {
+    int index = binarySearchCategoryLL(head, size, "electronics");
+    if (index == -1) {
+        total = 0;
+        creditCard = 0;
+        return;
+    }
+
+    // Expand left
+    int left = index;
+    while (left >= 0) {
+        TransactionsNode* node = getNodeAt(head, left);
+        if (!node || normalize(node->category) != "electronics") break;
+        left--;
+    }
+
+    // Expand right
+    int right = index;
+    while (right < size) {
+        TransactionsNode* node = getNodeAt(head, right);
+        if (!node || normalize(node->category) != "electronics") break;
+        right++;
+    }
+
+    // Count from left+1 to right-1
+    total = 0;
+    creditCard = 0;
+    for (int i = left + 1; i < right; ++i) {
+        TransactionsNode* node = getNodeAt(head, i);
+        if (node) {
+            total++;
+            if (normalize(node->payment_method) == "creditcard") {
+                creditCard++;
+            }
+        }
+    }
+}
+
+
 //// U Guys Can Add+ Here below continue
 //////////////////////////////////////////////////////////////////////////
 // Koh Chun Wei TP067580 (Quick Sort & Recursion Search)

@@ -46,6 +46,11 @@ int partitionbycategory(TransactionsArray* arr, int low, int high);
 void quickSortbycategory(TransactionsArray* arr, int low, int high);
 int countElectronics(TransactionsArray* arr, int index, int size);
 int countElectronicsCreditCard(TransactionsArray* arr, int index, int size);
+//YiXian
+void bubbleSortByCategory(TransactionsArray* arr, int count);
+int binarySearchCategory(TransactionsArray* arr, int size, const string& category);
+void countElectronicsAndCreditCard_Binary(TransactionsArray* arr, int size, int& total, int& creditCard);
+string normalize(const string& text);
 // Question 03
 void countWordsFromOne(ReviewsArray* review, int& count, WordFrequency*& wf, int& wordCount);
 int partitionbyword(WordFrequency* arr, int low, int high);
