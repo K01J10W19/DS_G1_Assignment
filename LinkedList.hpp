@@ -11,7 +11,6 @@ struct ReviewsNode{
     string review_text;
     ReviewsNode* next = nullptr;
     ReviewsNode* prev = nullptr;
-    
 };
 
 // Import "Transaction.CSV" to LinkedList
@@ -45,7 +44,6 @@ void clearLinkedList(TransactionsNode*& head);
 string convertDateFormatll(const string& date);
 TransactionsNode* partitionbydatell(TransactionsNode* low, TransactionsNode* high);
 void quickSortbydatell(TransactionsNode* low, TransactionsNode* high);
-void bubbleSortByDateLL(TransactionsNode* head);
 void displayTransactions(TransactionsNode* head);
 int countTransactions(TransactionsNode* head);
 // Question 02
@@ -55,22 +53,10 @@ int countElectronicsTotal(TransactionsNode* node);
 TransactionsNode* partitionbycategoryll(TransactionsNode* low, TransactionsNode* high);
 void quickSortbycategoryll(TransactionsNode* low, TransactionsNode* high);
 void displayCategory(TransactionsNode* head);
-
-string normalize2(const string& text);
-void bubbleSortByCategoryLL(TransactionsNode* head);
-TransactionsNode* getNodeAt(TransactionsNode* head, int index);
-int binarySearchCategoryLL(TransactionsNode* head, int size, const string& category);
-void countElectronicsCreditCardLL_Binary(TransactionsNode* head, int size, int& total, int& creditCard);
-
 // Question 03
 void countWordsFromOnell(ReviewsNode* head, WordFrequencyll*& wf_head, int& totalWords);
 void printWordOccurrences(WordFrequencyll* wf_head);
 void printWordOccurrences2(WordFrequencyll* wf_head);
 void sortWordListByFrequency(WordFrequencyll*& head);
-
-void countWordsFromOneLL(ReviewsNode* head, WordFrequencyll*& wf_head, int& totalWords);
-void bubbleSortByFrequencyLL(WordFrequencyll*& head);
-void displayTopWordsLL(WordFrequencyll* head);
-int countTotalWordsInOneStarReviews(ReviewsNode* head);
 
 #endif
