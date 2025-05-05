@@ -1,0 +1,11 @@
+cd C:\Users\ling5\OneDrive\桌面\Data Structure Assignment
+
+g++ Array_Question1.cpp
+g++ Array_Question2.cpp
+g++ Array_Question3.cpp
+
+g++ Linked_List_Question1.cpp
+g++ Linked_List_Question2.cpp
+g++ Linked_List_Question3.cpp
+
+a.exe
