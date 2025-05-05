@@ -129,7 +129,379 @@ void clearLinkedList(TransactionsNode*& head) {
     }
     head = nullptr; 
 }
+/////////////////////////////////////////////////////////////////////////
+// Nang Zhen Ning Q1 Q2 Q3
+//////////////////////////////////////////////////////////////////////////
+// Nang Zhen Ning Tp069063 Heap sort and Exponental search
+// 1.
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <algorithm>
+#include "LinkedList.hpp" 
 
+using namespace std;
+
+// Function to load Transactions CSV into linked list
+void TransactionsToLinkedList(const string& file_name, TransactionsNode*& head, TransactionsNode*& tail) {
+    ifstream file(file_name);
+    string line;
+    head = tail = nullptr;
+
+    getline(file, line); // skip header
+
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string item;
+        TransactionsNode* newNode = new TransactionsNode();
+
+        getline(ss, item, ',');
+        newNode->customer_ID = item;
+
+        getline(ss, item, ',');
+        newNode->product = item;
+
+        getline(ss, item, ',');
+        newNode->category = item;
+
+        getline(ss, item, ',');
+        newNode->price = stof(item);
+
+        getline(ss, item, ',');
+        newNode->date = item;
+
+        getline(ss, item, ',');
+        newNode->payment_method = item;
+
+        if (!head) {
+            head = tail = newNode;
+        } else {
+            tail->next = newNode;
+            newNode->prev = tail;
+            tail = newNode;
+        }
+    }
+}
+
+// Function to load Reviews CSV into linked list
+void ReviewsToLinkedList(const string& file_name, ReviewsNode*& head, ReviewsNode*& tail) {
+    ifstream file(file_name);
+    string line;
+    head = tail = nullptr;
+
+    getline(file, line); // skip header
+
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string item;
+        ReviewsNode* newNode = new ReviewsNode();
+
+        getline(ss, item, ',');
+        newNode->product_ID = item;
+
+        getline(ss, item, ',');
+        newNode->customer_ID = item;
+
+        getline(ss, item, ',');
+        newNode->rating = stoi(item);
+
+        getline(ss, item, ',');
+        newNode->review_text = item;
+
+        if (!head) {
+            head = tail = newNode;
+        } else {
+            tail->next = newNode;
+            newNode->prev = tail;
+            tail = newNode;
+        }
+    }
+}
+
+// Count nodes in transaction list
+int countLinkedList(TransactionsNode* head) {
+    int count = 0;
+    TransactionsNode* temp = head;
+    while (temp) {
+        count++;
+        temp = temp->next;
+    }
+    return count;
+}
+
+// Count nodes in review list
+int countLinkedList(ReviewsNode* head) {
+    int count = 0;
+    ReviewsNode* temp = head;
+    while (temp) {
+        count++;
+        temp = temp->next;
+    }
+    return count;
+}
+
+// Sort transactions by date (ascending)
+void sortTransactionsByDate(TransactionsNode*& head) {
+    if (!head || !head->next) return;
+
+    bool swapped;
+    do {
+        swapped = false;
+        TransactionsNode* curr = head;
+
+        while (curr->next) {
+            if (curr->date > curr->next->date) {
+                swap(curr->customer_ID, curr->next->customer_ID);
+                swap(curr->product, curr->next->product);
+                swap(curr->category, curr->next->category);
+                swap(curr->price, curr->next->price);
+                swap(curr->date, curr->next->date);
+                swap(curr->payment_method, curr->next->payment_method);
+                swapped = true;
+            }
+            curr = curr->next;
+        }
+    } while (swapped);
+}
+
+// Print transactions (for verification)
+void printTransactions(TransactionsNode* head) {
+    TransactionsNode* current = head;
+    while (current) {
+        cout << current->date << " - " << current->customer_ID << " bought " << current->product
+            << " (" << current->category << ") using " << current->payment_method << endl;
+        current = current->next;
+    }
+}
+
+int main() {
+    TransactionsNode* transactionsHead = nullptr;
+    TransactionsNode* transactionsTail = nullptr;
+    ReviewsNode* reviewsHead = nullptr;
+    ReviewsNode* reviewsTail = nullptr;
+
+    // Load the data
+    TransactionsToLinkedList("Transaction.csv", transactionsHead, transactionsTail);
+    ReviewsToLinkedList("Review.csv", reviewsHead, reviewsTail);
+
+    // Sort transactions by date
+    sortTransactionsByDate(transactionsHead);
+
+    // Output sorted transactions (optional)
+    cout << "Sorted Transactions by Date:\n";
+    printTransactions(transactionsHead);
+    cout << endl;
+
+    // Display total counts
+    cout << "Total number of transactions: " << countLinkedList(transactionsHead) << endl;
+    cout << "Total number of reviews: " << countLinkedList(reviewsHead) << endl;
+
+    return 0;
+}
+
+//// U Guys Can Add+ Here below continue
+//////////////////////////////////////////////////////////////////////////
+// Nang Zhen Ning Tp069063 Heap sort and Exponental search
+// 2.
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <iomanip>
+#include "LinkedList.hpp" 
+
+using namespace std;
+
+// Load transactions from CSV
+void TransactionsToLinkedList(const string& file_name, TransactionsNode*& head, TransactionsNode*& tail) {
+    ifstream file(file_name);
+    string line;
+    head = tail = nullptr;
+
+    getline(file, line); // Skip header
+
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string item;
+        TransactionsNode* newNode = new TransactionsNode();
+
+        getline(ss, item, ',');
+        newNode->customer_ID = item;
+
+        getline(ss, item, ',');
+        newNode->product = item;
+
+        getline(ss, item, ',');
+        newNode->category = item;
+
+        getline(ss, item, ',');
+        newNode->price = stof(item);
+
+        getline(ss, item, ',');
+        newNode->date = item;
+
+        getline(ss, item, ',');
+        newNode->payment_method = item;
+
+        if (!head) {
+            head = tail = newNode;
+        } else {
+            tail->next = newNode;
+            newNode->prev = tail;
+            tail = newNode;
+        }
+    }
+}
+
+// Function to calculate percentage of Electronics paid by Credit Card
+void CalculateElectronicsCreditCardPercentage(TransactionsNode* head) {
+    int totalElectronics = 0;
+    int creditCardElectronics = 0;
+
+    TransactionsNode* temp = head;
+    while (temp) {
+        // Convert both strings to lowercase for case-insensitive comparison
+        string category = temp->category;
+        string payment = temp->payment_method;
+        transform(category.begin(), category.end(), category.begin(), ::tolower);
+        transform(payment.begin(), payment.end(), payment.begin(), ::tolower);
+
+        if (category == "electronics") {
+            totalElectronics++;
+            if (payment == "credit card") {
+                creditCardElectronics++;
+            }
+        }
+
+        temp = temp->next;
+    }
+
+    if (totalElectronics == 0) {
+        cout << "No transactions in the 'Electronics' category." << endl;
+    } else {
+        float percentage = (static_cast<float>(creditCardElectronics) / totalElectronics) * 100;
+        cout << fixed << setprecision(2);
+        cout << "Percentage of 'Electronics' purchases made using Credit Card: " << percentage << "%" << endl;
+    }
+}
+
+int main() {
+    TransactionsNode* transactionsHead = nullptr;
+    TransactionsNode* transactionsTail = nullptr;
+
+    // Load transaction data
+    TransactionsToLinkedList("Transaction.csv", transactionsHead, transactionsTail);
+
+    // Calculate and display result
+    CalculateElectronicsCreditCardPercentage(transactionsHead);
+
+    return 0;
+}
+
+//// U Guys Can Add+ Here below continue
+//////////////////////////////////////////////////////////////////////////
+// Nang Zhen Ning Tp069063 Heap sort and Exponental search
+// 3. 
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <map>
+#include <vector>
+#include <regex>
+#include <algorithm>
+#include "LinkedList.hpp" 
+
+using namespace std;
+
+// Load reviews from CSV
+void ReviewsToLinkedList(const string& file_name, ReviewsNode*& head, ReviewsNode*& tail) {
+    ifstream file(file_name);
+    string line;
+    head = tail = nullptr;
+
+    getline(file, line); // Skip header
+
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string item;
+        ReviewsNode* newNode = new ReviewsNode();
+
+        getline(ss, item, ',');
+        newNode->product_ID = item;
+
+        getline(ss, item, ',');
+        newNode->customer_ID = item;
+
+        getline(ss, item, ',');
+        newNode->rating = stoi(item);
+
+        getline(ss, item, ',');
+        newNode->review_text = item;
+
+        if (!head) {
+            head = tail = newNode;
+        } else {
+            tail->next = newNode;
+            newNode->prev = tail;
+            tail = newNode;
+        }
+    }
+}
+
+// Helper function to convert string to lowercase
+string toLowerCase(const string& str) {
+    string lower = str;
+    transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+    return lower;
+}
+
+// Function to get most frequent words in 1-star reviews
+void GetTopWordsInOneStarReviews(ReviewsNode* head, int topN = 10) {
+    map<string, int> wordFreq;
+    regex wordRegex("\\b[a-zA-Z]+\\b");  // Match words (letters only)
+
+    ReviewsNode* current = head;
+    while (current) {
+        if (current->rating == 1) {
+            string review = toLowerCase(current->review_text);
+            sregex_iterator it(review.begin(), review.end(), wordRegex);
+            sregex_iterator end;
+
+            while (it != end) {
+                string word = it->str();
+                wordFreq[word]++;
+                ++it;
+            }
+        }
+        current = current->next;
+    }
+
+    // Move to vector for sorting
+    vector<pair<string, int>> sortedWords(wordFreq.begin(), wordFreq.end());
+    sort(sortedWords.begin(), sortedWords.end(), [](auto& a, auto& b) {
+        return b.second < a.second; // Descending
+    });
+
+    cout << "Top " << topN << " most used words in 1-star reviews:\n";
+    for (int i = 0; i < min(topN, (int)sortedWords.size()); ++i) {
+        cout << sortedWords[i].first << ": " << sortedWords[i].second << " times\n";
+    }
+}
+
+int main() {
+    ReviewsNode* reviewsHead = nullptr;
+    ReviewsNode* reviewsTail = nullptr;
+
+    // Load review data
+    ReviewsToLinkedList("Review.csv", reviewsHead, reviewsTail);
+
+    // Analyze top words in 1-star reviews
+    GetTopWordsInOneStarReviews(reviewsHead, 10); // Top 10 by default
+
+    return 0;
+}
 //////////////////////////////////////////////////////////////////////////
 // Koh Chun Wei TP067580 (Quick Sort & Recursion Search)
 // 1.
