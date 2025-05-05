@@ -77,8 +77,34 @@ int main(){
     cout<<"Quick Sorting & Recursion Searching for LinkedList [Question03]: ";
     Measure_Time([&](){sortWordListByFrequency(wf_head);});
 //// U Guys Can Add+ Here below continue
-    
+//Array Yx
+int wordCount = 0;
+countWordsFromOne(ra, review_count, wf, wordCount);
+bubbleSortWords(wf, wordCount);
+displayTopWords(wf, wordCount);
+int totalWordCount = countTotalWordsInOneStarReviews(ra, 0, review_count);
+cout << "Total words in 1-star reviews: " << totalWordCount << endl;
+int memoryArrayReal = 0;
+for (int i = 0; i < wordCount; ++i) {
+    memoryArrayReal += sizeof(WordFrequency) + wf[i].word.capacity(); // or .size()
+}
+cout << " Memory Used (Array): " << memoryArrayReal << " bytes" << endl;
 
+///Linked list
+WordFrequencyll* wfLL = nullptr;
+int totalWordsLL = 0;
+countWordsFromOneLL(head, wfLL, totalWordsLL);
+bubbleSortByFrequencyLL(wfLL);
+displayTopWordsLL(wfLL);
+int totalLinkedListWords = countTotalWordsInOneStarReviews(head);
+cout << "Total Words in 1-Star Reviews (Linked List): " << totalLinkedListWords << endl;
+int memoryLinkedList = 0;
+WordFrequencyll* curr = wfLL;
+while (curr != nullptr) {
+    memoryLinkedList += sizeof(WordFrequencyll);
+    curr = curr->next;
+}
+cout << "Memory Used (Linked List): " << memoryLinkedList << " bytes" << endl;
 
 
 
