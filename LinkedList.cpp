@@ -7,36 +7,52 @@
 #include "LinkedList.hpp"
 using namespace std;
 
-void ReviewsToLinkedList(const string& file_name, ReviewsNode*& head, ReviewsNode*& tail){
-    ifstream file(file_name); // input the file
-    string line; // variable called line
+void ReviewsToLinkedList(const string& file_name, ReviewsNode*& head, ReviewsNode*& tail) {
+    ifstream file(file_name);
+    string line;
+    head = tail = nullptr;
 
-    head = tail = nullptr; // head and tail of doubly linked list default to nullptr
+    getline(file, line); // Skip header
 
-    getline(file,line); // Ignore header
+    while (getline(file, line)) {
+        string fields[4]; // We expect 4 fields
+        string current;
+        bool inQuotes = false;
+        int fieldIndex = 0;
 
-    while(getline(file, line)){ // read the file line by line
-        stringstream ss(line);  
-        string item;
-        ReviewsNode* newNode = new ReviewsNode(); // set pointer in doubly linked list
+        for (char c : line) {
+            if (c == '"') {
+                inQuotes = !inQuotes;
+            } else if (c == ',' && !inQuotes) {
+                if (fieldIndex < 4) {
+                    fields[fieldIndex++] = current;
+                    current.clear();
+                }
+            } else {
+                current += c;
+            }
+        }
+        if (fieldIndex < 4) {
+            fields[fieldIndex] = current; // Final field
+        }
 
-        getline(ss, item, ','); // attribute 01 product ID (str)
-        newNode -> product_ID = item;
-        getline(ss, item, ','); // attribute 02 Customer ID (str)
-        newNode -> customer_ID = item;
-        getline(ss, item, ','); // attribute 03 Rating (int)
-        newNode -> rating = stoi(item);
-        getline(ss, item, ','); // attribute 04 Review Text (str)
-        newNode -> review_text = item; 
+        ReviewsNode* newNode = new ReviewsNode();
+        newNode->product_ID = fields[0];
+        newNode->customer_ID = fields[1];
+        newNode->rating = stoi(fields[2]);
+        newNode->review_text = fields[3];
+        newNode->next = nullptr;
+        newNode->prev = tail;
 
-        if(!head){ // if empty means this is a first node
-            head = tail = newNode; // head and tail point to newNode
-        } else{
-            tail-> next = newNode; // link next to the new node
-            newNode-> prev = tail; // link prev back to the current tail
-            tail = newNode; // update tail to new last node
+        if (!head) {
+            head = tail = newNode;
+        } else {
+            tail->next = newNode;
+            tail = newNode;
         }
     }
+
+    file.close();
 }
 void TransactionsToLinkedList(const string& file_name, TransactionsNode*& head, TransactionsNode*& tail){
     ifstream file(file_name); // input the file
@@ -162,6 +178,25 @@ void quickSortbydatell(TransactionsNode* low, TransactionsNode* high) {
         quickSortbydatell(p->next, high);
     }
 }
+void bubbleSortByDateLL(TransactionsNode* head) {
+    bool swapped;
+    do {
+        swapped = false;
+        TransactionsNode* current = head;
+        while (current != nullptr && current->next != nullptr) {
+            if (convertDateFormatll(current->date) > convertDateFormatll(current->next->date)) {
+                swap(current->customer_ID, current->next->customer_ID);
+                swap(current->product, current->next->product);
+                swap(current->category, current->next->category);
+                swap(current->price, current->next->price);
+                swap(current->date, current->next->date);
+                swap(current->payment_method, current->next->payment_method);
+                swapped = true;
+            }
+            current = current->next;
+        }
+    } while (swapped);
+}
 void displayTransactions(TransactionsNode* head) {
     while (head) {
         cout << head->customer_ID << ", "
@@ -248,6 +283,98 @@ int countElectronicsTotal(TransactionsNode* node) {
 
     return countElectronicsTotal(node->next);
 }
+TransactionsNode* getNodeAt(TransactionsNode* head, int index) {
+    int currentIndex = 0;
+    TransactionsNode* current = head;
+    while (current != nullptr && currentIndex < index) {
+        current = current->next;
+        currentIndex++;
+    }
+    return current;
+}
+
+string normalize2(const string& text) {
+    string result = text;
+    result.erase(remove_if(result.begin(), result.end(), ::isspace), result.end());
+    transform(result.begin(), result.end(), result.begin(), ::tolower);
+    return result;
+}
+void bubbleSortByCategoryLL(TransactionsNode* head) {
+    bool swapped;
+    do {
+        swapped = false;
+        TransactionsNode* current = head;
+        while (current != nullptr && current->next != nullptr) {
+            if (normalize2(current->category) > normalize2(current->next->category)) {
+                // Swap contents
+                swap(current->customer_ID, current->next->customer_ID);
+                swap(current->product, current->next->product);
+                swap(current->category, current->next->category);
+                swap(current->price, current->next->price);
+                swap(current->date, current->next->date);
+                swap(current->payment_method, current->next->payment_method);
+                swapped = true;
+            }
+            current = current->next;
+        }
+    } while (swapped);
+}
+
+int binarySearchCategoryLL(TransactionsNode* head, int size, const string& target) {
+    int low = 0, high = size - 1;
+    string tgt = normalize2(target);
+
+    while (low <= high) {
+        int mid = (low + high) / 2;
+        TransactionsNode* midNode = getNodeAt(head, mid);
+        if (!midNode) break;
+
+        string midCat = normalize2(midNode->category);
+        if (midCat == tgt) return mid;  // Return index of first match
+        else if (midCat < tgt) low = mid + 1;
+        else high = mid - 1;
+    }
+    return -1;
+}
+void countElectronicsCreditCardLL_Binary(TransactionsNode* head, int size, int& total, int& creditCard) {
+    int index = binarySearchCategoryLL(head, size, "electronics");
+    if (index == -1) {
+        total = 0;
+        creditCard = 0;
+        return;
+    }
+
+    // Expand left
+    int left = index;
+    while (left >= 0) {
+        TransactionsNode* node = getNodeAt(head, left);
+        if (!node || normalize2(node->category) != "electronics") break;
+        left--;
+    }
+
+    // Expand right
+    int right = index;
+    while (right < size) {
+        TransactionsNode* node = getNodeAt(head, right);
+        if (!node || normalize2(node->category) != "electronics") break;
+        right++;
+    }
+
+    // Count from left+1 to right-1
+    total = 0;
+    creditCard = 0;
+    for (int i = left + 1; i < right; ++i) {
+        TransactionsNode* node = getNodeAt(head, i);
+        if (node) {
+            total++;
+            if (normalize2(node->payment_method) == "creditcard") {
+                creditCard++;
+            }
+        }
+    }
+}
+
+
 //// U Guys Can Add+ Here below continue
 //////////////////////////////////////////////////////////////////////////
 // Koh Chun Wei TP067580 (Quick Sort & Recursion Search)
@@ -335,5 +462,100 @@ void sortWordListByFrequency(WordFrequencyll*& head) {
         }
     } while (swapped);
 }
+
+void countWordsFromOneLL(ReviewsNode* head, WordFrequencyll*& wf_head, int& totalWords) {
+    wf_head = nullptr;
+    totalWords = 0;
+
+    while (head != nullptr) {
+        if (head->rating == 1) {
+            std::stringstream ss(head->review_text);
+            std::string word;
+
+            while (ss >> word) {
+                // Clean word: keep only alphabets
+                word.erase(remove_if(word.begin(), word.end(), [](char c) {
+                    return !isalpha(c);
+                }), word.end());
+                std::transform(word.begin(), word.end(), word.begin(), ::tolower);
+                if (word.empty()) continue;
+
+                totalWords++;
+
+                // Search manually
+                WordFrequencyll* curr = wf_head;
+                bool found = false;
+                while (curr != nullptr) {
+                    if (curr->word == word) {
+                        curr->count++;
+                        found = true;
+                        break;
+                    }
+                    curr = curr->next;
+                }
+
+                // Insert at end if not found
+                if (!found) {
+                    WordFrequencyll* newNode = new WordFrequencyll{word, 1, nullptr, nullptr};
+                    if (!wf_head) {
+                        wf_head = newNode;
+                    } else {
+                        WordFrequencyll* tail = wf_head;
+                        while (tail->next) tail = tail->next;
+                        tail->next = newNode;
+                        newNode->prev = tail;
+                    }
+                }
+            }
+        }
+        head = head->next;
+    }
+}
+
+void bubbleSortByFrequencyLL(WordFrequencyll*& head) {
+    if (!head) return;
+    bool swapped;
+
+    do {
+        swapped = false;
+        WordFrequencyll* curr = head;
+
+        while (curr && curr->next) {
+            if (curr->count < curr->next->count) {
+                std::swap(curr->word, curr->next->word);
+                std::swap(curr->count, curr->next->count);
+                swapped = true;
+            }
+            curr = curr->next;
+        }
+    } while (swapped);
+}
+
+void displayTopWordsLL(WordFrequencyll* head) {
+    std::cout << "\nAll Word Frequencies in 1-Star Reviews (Linked List):\n";
+    while (head != nullptr) {
+        std::cout << head->word << ": " << head->count << " times\n";
+        head = head->next;
+    }
+}
+int countTotalWordsInOneStarReviews(ReviewsNode* head) {
+    if (head == nullptr) return 0;
+
+    int wordCount = 0;
+    if (head->rating == 1) {
+        stringstream ss(head->review_text);
+        string word;
+        while (ss >> word) {
+            word.erase(0, word.find_first_not_of(" \t\n\r\f\v"));
+            word.erase(word.find_last_not_of(" \t\n\r\f\v") + 1);
+            word.erase(remove(word.begin(), word.end(), '\''), word.end());
+            word.erase(remove_if(word.begin(), word.end(), ::ispunct), word.end());
+            if (!word.empty()) wordCount++;
+        }
+    }
+
+    return wordCount + countTotalWordsInOneStarReviews(head->next);
+}
+
 
 
