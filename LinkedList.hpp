@@ -11,6 +11,7 @@ struct ReviewsNode{
     string review_text;
     ReviewsNode* next = nullptr;
     ReviewsNode* prev = nullptr;
+    
 };
 
 // Import "Transaction.CSV" to LinkedList
@@ -55,6 +56,7 @@ TransactionsNode* partitionbycategoryll(TransactionsNode* low, TransactionsNode*
 void quickSortbycategoryll(TransactionsNode* low, TransactionsNode* high);
 void displayCategory(TransactionsNode* head);
 
+string normalize2(const string& text);
 void bubbleSortByCategoryLL(TransactionsNode* head);
 TransactionsNode* getNodeAt(TransactionsNode* head, int index);
 int binarySearchCategoryLL(TransactionsNode* head, int size, const string& category);
@@ -65,5 +67,10 @@ void countWordsFromOnell(ReviewsNode* head, WordFrequencyll*& wf_head, int& tota
 void printWordOccurrences(WordFrequencyll* wf_head);
 void printWordOccurrences2(WordFrequencyll* wf_head);
 void sortWordListByFrequency(WordFrequencyll*& head);
+
+void countWordsFromOneLL(ReviewsNode* head, WordFrequencyll*& wf_head, int& totalWords);
+void bubbleSortByFrequencyLL(WordFrequencyll*& head);
+void displayTopWordsLL(WordFrequencyll* head);
+int countTotalWordsInOneStarReviews(ReviewsNode* head);
 
 #endif

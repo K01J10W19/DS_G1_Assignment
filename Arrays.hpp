@@ -41,7 +41,7 @@ int binarySearchCustomerID(TransactionsArray* arr, int size, const string& custo
 void displayAllCustomerTransactions(TransactionsArray* arr, int size, const string& customerID); // Display all transactions for a given customer ID (expands from binary search result)
 
 // Question 02
-string normalize(string& str);
+//string normalize(string& str);
 int partitionbycategory(TransactionsArray* arr, int low, int high);
 void quickSortbycategory(TransactionsArray* arr, int low, int high);
 int countElectronics(TransactionsArray* arr, int index, int size);
@@ -52,7 +52,13 @@ int binarySearchCategory(TransactionsArray* arr, int size, const string& categor
 void countElectronicsAndCreditCard_Binary(TransactionsArray* arr, int size, int& total, int& creditCard);
 string normalize(const string& text);
 // Question 03
-void countWordsFromOne(ReviewsArray* review, int& count, WordFrequency*& wf, int& wordCount);
+//void countWordsFromOne(ReviewsArray* review, int& count, WordFrequency*& wf, int& wordCount);
 int partitionbyword(WordFrequency* arr, int low, int high);
 void quickSortWords(WordFrequency* arr, int low, int high);
+
+void countWordsFromOne(ReviewsArray* review, int reviewCount, WordFrequency*& wf, int& wordCount);
+void bubbleSortWords(WordFrequency* wf, int wordCount);
+void displayTopWords(WordFrequency* arr, int size);
+int countTotalWordsInOneStarReviews(ReviewsArray* arr, int index, int size);
+
 #endif
